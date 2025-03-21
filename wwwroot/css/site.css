@@ -1,11 +1,17 @@
 html {
   font-size: 14px;
+  font-family: "Poppins", sans-serif;
 }
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
+}
+
+/* COLORS */
+.bg-secondary-color {
+  background-color: #d9d9d9;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -28,4 +34,45 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/*HEADER*/
+
+.navbar {
+  height: 80px;
+  padding: 0 34px;
+}
+
+.navbar .navbar-logo .logo-text {
+  font-size: 30px;
+}
+
+.dropdown-menu {
+  border-radius: 10px;
+  background-color: #AAAAAA;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: #000;
+}
+
+/*FOOTER */
+
+footer{
+  font-size: 24px;
+  padding: 44px 0;
+}
+
+footer p {
+  margin-bottom: 0;
+}
+
+footer .footer-contact {
+  gap: 11px;
+}
+
+footer .footer-contact a {
+  text-decoration: none;
+  color: #000;
 }
