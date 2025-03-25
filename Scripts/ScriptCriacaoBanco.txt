@@ -1,0 +1,59 @@
+-- rodar esse primeiro sozinho
+CREATE DATABASE Ong_DataBase;
+
+-- rodar todos uma unica vez
+CREATE TABLE IF NOT EXISTS usuario (
+    id SERIAL PRIMARY KEY,
+    nivel INT NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    usuario VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cadastro_animal (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    raca VARCHAR(255) NOT NULL,
+    idade INT NOT NULL,
+    disponivel VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS porte (
+    id SERIAL PRIMARY KEY,
+    porte VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tipo_animal (
+    id SERIAL PRIMARY KEY,
+    animal VARCHAR(255) NOT NULL,
+    porte INT NOT NULL,
+    FOREIGN KEY (porte) REFERENCES porte(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS imagem (
+    id SERIAL PRIMARY KEY,
+    animal_id INT NOT NULL,
+    imagem VARCHAR(500) NOT NULL, -- Caminho do arquivo
+    FOREIGN KEY (animal_id) REFERENCES cadastro_animal(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS adotante (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    endereco VARCHAR(255) NOT NULL,
+    animal_id INT NOT NULL,
+    data_adocao DATE NOT NULL,
+    FOREIGN KEY (animal_id) REFERENCES cadastro_animal(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS niveis_acesso (
+    id SERIAL PRIMARY KEY,
+    nivel VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS rotina (
+    id SERIAL PRIMARY KEY,
+    rotina VARCHAR(255) NOT NULL,
+    nivel_acesso INT NOT NULL,
+    ativo INT NOT NULL,
+    FOREIGN KEY (nivel_acesso) REFERENCES niveis_acesso(id) ON DELETE SET NULL
+);
