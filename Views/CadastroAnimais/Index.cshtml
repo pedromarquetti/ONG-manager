@@ -1,0 +1,23 @@
+@model IEnumerable<ONGManager.Models.CadastroAnimal>
+
+<h2>Conheça seu novo amigo:</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Raca</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.nome</td>
+                <td>@item.idade</td>
+                <td>@item.raca</td>
+            </tr>
+        }
+    </tbody>
+</table>
