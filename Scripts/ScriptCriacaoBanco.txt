@@ -1,6 +1,8 @@
 -- rodar esse primeiro sozinho
 CREATE DATABASE Ong_DataBase;
 
+
+
 -- rodar todos uma unica vez
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
@@ -27,6 +29,9 @@ CREATE TABLE cadastro_animal (
     raca VARCHAR(255) NOT NULL,
     idade INT NOT NULL,
     disponivel INT NOT NULL,
+	biografia TEXT,
+	cidade VARCHAR(255) NOT NULL,
+	estado VARCHAR (255)NOT NULL,
     tipo_animal INT NOT NULL,
     porte_animal INT NOT NULL,
     FOREIGN KEY (tipo_animal) REFERENCES tipo_animal(id) ON DELETE SET NULL,
