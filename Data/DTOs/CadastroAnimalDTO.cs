@@ -10,7 +10,11 @@ public class CadastroAnimalDTO
     public bool Disponivel { get; set; }
     public int TipoAnimalId { get; set; }
     public string TipoAnimal { get; set; } = string.Empty;
-
+    public string? biografia { get; set; }
+    [Required]
+    public string cidade { get; set; } = string.Empty;
+    [Required]
+    public string estado { get; set; } = string.Empty;
     public int PorteId { get; set; }
     public string Porte { get; set; } = string.Empty;
 
