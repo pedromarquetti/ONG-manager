@@ -66,3 +66,19 @@ CREATE TABLE rotina (
     ativo INT NOT NULL,
     FOREIGN KEY (nivel_acesso) REFERENCES niveis_acesso(id) ON DELETE SET NULL
 );
+
+CREATE TABLE ong (
+    id SERIAL PRIMARY KEY,
+    nome_ong VARCHAR(255) NOT NULL,
+    cidade VARCHAR(255) NOT NULL,
+    estado VARCHAR(255) NOT NULL,
+    telefone VARCHAR(255) NOT NULL,
+    
+);
+CREATE ROLE adm WITH 
+    LOGIN 
+    SUPERUSER 
+    CREATEDB 
+    CREATEROLE 
+    REPLICATION 
+    PASSWORD 'integrador1';
