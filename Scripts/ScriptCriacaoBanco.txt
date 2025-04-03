@@ -72,7 +72,7 @@ CREATE TABLE ong (
     nome_ong VARCHAR(255) NOT NULL,
     cidade VARCHAR(255) NOT NULL,
     estado VARCHAR(255) NOT NULL,
-    telefone VARCHAR(255) NOT NULL,
+    telefone VARCHAR(255) NOT NULL
     
 );
 CREATE ROLE adm WITH 
