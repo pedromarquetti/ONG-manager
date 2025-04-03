@@ -1,20 +1,60 @@
-@model ONGManager.Data.DTOs.CadastroAnimalDTO
+@model ONGManager.Models.CadastroAnimal
 
 <h2>Cadastrar animal</h2>
 
 <form asp-action="Create" method="post">
-    <div>
-        <label>Nome</label>
-        <input asp-for="Nome" class="form-control" />
+    <div class="form-group">
+        <label asp-for="nome" class="control-label"></label>
+        <input asp-for="nome" class="form-control" />
+        <span asp-validation-for="nome" class="text-danger"></span>
     </div>
-    <div>
-        <label>Raca</label>
-        <input asp-for="Raca" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="raca" class="control-label"></label>
+        <input asp-for="raca" class="form-control" />
+        <span asp-validation-for="raca" class="text-danger"></span>
     </div>
-    <div>
-        <label>Idade</label>
-        <input asp-for="Idade" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="idade" class="control-label"></label>
+        <input asp-for="idade" class="form-control" type="number" min="0" />
+        <span asp-validation-for="idade" class="text-danger"></span>
     </div>
-    <button type="submit">Salvar</button>
+
+    <div class="form-group">
+        <label asp-for="cidade" class="control-label"></label>
+        <input asp-for="cidade" class="form-control" />
+        <span asp-validation-for="cidade" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="estado" class="control-label"></label>
+        <input asp-for="estado" class="form-control" />
+        <span asp-validation-for="estado" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="disponivel" class="control-label"></label>
+        <select asp-for="disponivel" class="form-control">
+            <option value="1">Disponível</option>
+            <option value="0">Não Disponível</option>
+        </select>
+        <span asp-validation-for="disponivel" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tipo_animal" class="control-label"></label>
+        <select asp-for="tipo_animal" class="form-control" asp-items="ViewBag.TipoAnimal"></select>
+        <span asp-validation-for="tipo_animal" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="porte_animal" class="control-label"></label>
+        <select asp-for="porte_animal" class="form-control" asp-items="ViewBag.Porte"></select>
+        <span asp-validation-for="porte_animal" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancelar</a>
 </form>
 <a asp-action="Index">Voltar</a>
