@@ -1,0 +1,14 @@
+@model ONGManager.Models.CadastroAnimal
+
+<h2>Você tem certeza que quer apagar o cadastro de @Model.nome?</h2>
+
+<p><strong>Nome:</strong> @Model.nome</p>
+<p><strong>Raca:</strong> @Model.raca</p>
+<p><strong>Idade:</strong> @Model.idade</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="id" />
+    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+</form>
+
+<a asp-action="Index">Voltar</a>

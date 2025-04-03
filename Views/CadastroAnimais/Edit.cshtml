@@ -1,0 +1,68 @@
+@model ONGManager.Models.CadastroAnimal
+
+<h2>Editar animal</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="id" />
+
+    <div class="form-group">
+        <label asp-for="nome" class="control-label"></label>
+        <input asp-for="nome" class="form-control" />
+        <span asp-validation-for="nome" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="raca" class="control-label"></label>
+        <input asp-for="raca" class="form-control" />
+        <span asp-validation-for="raca" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="idade" class="control-label"></label>
+        <input asp-for="idade" type="number" class="form-control" />
+        <span asp-validation-for="idade" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="cidade" class="control-label"></label>
+        <input asp-for="cidade" class="form-control" />
+        <span asp-validation-for="cidade" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="estado" class="control-label"></label>
+        <input asp-for="estado" class="form-control" />
+        <span asp-validation-for="estado" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="disponivel" class="control-label"></label>
+        <select asp-for="disponivel" class="form-control">
+            <option value="0">Disponível</option>
+            <option value="1">Indisponível</option>
+        </select>
+        <span asp-validation-for="disponivel" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="tipo_animal" />
+
+    <div class="form-group">
+        <label asp-for="TipoAnimal" class="control-label"></label>
+        <select asp-for="TipoAnimal" class="form-control" asp-items="ViewBag.TipoAnimal"></select>
+        <span asp-validation-for="TipoAnimal" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="porte_animal" />
+
+    <div class="form-group">
+        <label asp-for="Porte" class="control-label"></label>
+        <select asp-for="Porte" class="form-control" asp-items="ViewBag.Porte"></select>
+        <span asp-validation-for="Porte" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+<a asp-action="Index">Voltar</a>
