@@ -17,7 +17,7 @@ public class CadastroAnimal
     [Required]
     public int idade { get; set; }
     [Required]
-    public bool disponivel { get; set; }
+    public int disponivel { get; set; }
     public string? biografia { get; set; }
     [Required]
     public string cidade { get; set; } = string.Empty;
