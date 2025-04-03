@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
 using ONGManager.Data.DTOs;
@@ -18,9 +19,9 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int idAnimal)
+        public async Task<IActionResult> Details(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(idAnimal);
+            var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
             
             if(animal != null)
                 return View(animal);
@@ -31,92 +32,80 @@ namespace ONGManager.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
+            ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CadastroAnimalDTO cadastroAnimalDTO)
+        public async Task<IActionResult> Create(CadastroAnimal cadastroAnimal)
         {
-            CadastroAnimal animal = new()
+            if (ModelState.IsValid)
             {
-                disponivel = cadastroAnimalDTO.Disponivel,
-                idade = cadastroAnimalDTO.Idade,
-                nome = cadastroAnimalDTO.Nome,
-                porte_animal = cadastroAnimalDTO.PorteId,
-                raca = cadastroAnimalDTO.Raca,
-                tipo_animal = cadastroAnimalDTO.TipoAnimalId
-            };
-
-            //TO DO: upload da imagem
-
-            try
-            {
-                _ongDbContext.cadastro_animal.Add(animal);
-                await _ongDbContext.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                System.Console.WriteLine("Ocorreu o seguinte erro ao tentar cadastrar animal: " + ex.Message.ToString());
+                try
+                {
+                    await _ongDbContext.AddAsync(cadastroAnimal);
+                    await _ongDbContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Ocorreu um erro ao tentar cadastrar o animal: " + ex.Message);
+                }
             }
 
-            return View(cadastroAnimalDTO);
+            ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal", cadastroAnimal.tipo_animal);
+            ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte", cadastroAnimal.porte_animal);
+
+            return View(cadastroAnimal);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int idAnimal)
+        public async Task<IActionResult> Edit(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(idAnimal);
+            var animal = await _ongDbContext.cadastro_animal
+                        .Include(c => c.TipoAnimal)
+                        .Include(c => c.Porte)
+                        .FirstOrDefaultAsync(a => a.id == id);
             
             if(animal != null)
             {
-                CadastroAnimalDTO animalDTO = new()
-                {
-                    Disponivel = animal.disponivel,
-                    Idade = animal.idade,
-                    Nome = animal.nome,
-                    PorteId = animal.porte_animal,
-                    Raca = animal.raca,
-                    TipoAnimalId = animal.tipo_animal
-                };
+                ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
+                ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte");
 
-                return RedirectToAction(nameof(Index));
+                return View(animal);
             }
 
             return NotFound();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit(int idAnimal, CadastroAnimalDTO cadastroAnimalDTO)
+        [HttpPost]
+        public async Task<IActionResult> Edit(CadastroAnimal cadastroAnimal)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(idAnimal);
-            if(animal != null)
+            if(ModelState.IsValid)
             {
                 try
                 {
-                    animal.disponivel = cadastroAnimalDTO.Disponivel;
-                    animal.idade = cadastroAnimalDTO.Idade;
-                    animal.nome = cadastroAnimalDTO.Nome;
-                    animal.porte_animal = cadastroAnimalDTO.PorteId;
-                    animal.raca = cadastroAnimalDTO.Raca;
-                    animal.tipo_animal = cadastroAnimalDTO.TipoAnimalId;
-
+                    _ongDbContext.Update(cadastroAnimal);
                     await _ongDbContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
                 }
                 catch(Exception ex)
                 {
                     System.Console.WriteLine("Ocorreu o seguinte erro ao tentar atualizar as informções: " + ex.Message.ToString());
                 }
 
-                return RedirectToAction(nameof(Index));
+                ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal", cadastroAnimal.tipo_animal);
+                ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte", cadastroAnimal.porte_animal);
             }
 
-            return NotFound();
+            return View(cadastroAnimal);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int idAnimal)
+        public async Task<IActionResult> Delete(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(idAnimal);
+            var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
 
             if(animal != null)
             {
@@ -126,15 +115,23 @@ namespace ONGManager.Controllers
             return NotFound();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteConfirmed(int idAnimal)
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(idAnimal);
+            var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
 
             if(animal != null)
             {
-                _ongDbContext.cadastro_animal.Remove(animal);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _ongDbContext.cadastro_animal.Remove(animal);
+                    await _ongDbContext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch(Exception ex)
+                {
+                    System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o cadastro do animal: " + ex.Message.ToString());
+                }
             }   
 
             return NotFound();
