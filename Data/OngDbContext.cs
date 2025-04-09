@@ -12,5 +12,6 @@ namespace ONGManager.Data
         public DbSet<Imagem> imagem { get; set; }
         public DbSet<NiveisAcesso> niveis_acesso { get; set; }
         public DbSet<Rotina> rotina { get; set; }
+        public DbSet<ONG> ong { get; set; }
     }
 }
