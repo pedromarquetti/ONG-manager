@@ -1,0 +1,18 @@
+ALTER TABLE ong
+ADD COLUMN facebook VARCHAR(255) NOT NULL,
+ADD COLUMN instagram VARCHAR(255) NOT NULL,
+ADD COLUMN caminho_imagem_logo VARCHAR(255) NOT NULL,
+ADD COLUMN email VARCHAR(255) NOT NULL;
+
+INSERT INTO ONG (nome_ong, cidade, estado, telefone, email, caminho_imagem_logo, facebook, instagram)
+VALUES 
+(
+    'AAANO',
+    'Nova Odessa',
+    'SP',
+    '(11) 91234-5678',
+    'contato@aaano.org.br',
+    '/imagens/logo_amigos.png',
+    'facebook.com/aaano',
+    'instagram.com/aaano'
+);
