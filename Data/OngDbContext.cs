@@ -19,7 +19,7 @@ namespace ONGManager.Data
             {
                 entity.ToTable("imagem");
 
-                // Relacionamento com cadastro_animal
+               
                 entity.HasOne(i => i.Animal)
                       .WithMany(a => a.Imagens)
                       .HasForeignKey(i => i.AnimalId)

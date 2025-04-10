@@ -36,20 +36,18 @@ public class ImagemService
             await arquivo.CopyToAsync(memoryStream);
             byte[] fileBytes = memoryStream.ToArray();
 
-            // Debug: verifique o conteúdo do arquivo
-            Console.WriteLine($"Tentando upload de {fileName} ({fileBytes.Length} bytes)");
 
             var response = await _supabase.Storage
                 .From(BucketName)
                 .Upload(fileBytes, fileName);
 
-            Console.WriteLine($"Resposta do Supabase: {JsonSerializer.Serialize(response)}");
+            //Console.WriteLine($"Resposta do Supabase: {JsonSerializer.Serialize(response)}");
 
             var publicUrl = _supabase.Storage
                 .From(BucketName)
                 .GetPublicUrl(fileName);
 
-            Console.WriteLine($"URL pública gerada: {publicUrl}");
+            //Console.WriteLine($"URL pública gerada: {publicUrl}");
 
             var imagem = new Imagem
             {
