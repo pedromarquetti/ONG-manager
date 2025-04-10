@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
 using ONGManager.Data.DTOs;
 using ONGManager.Models;
-using Supabase.Storage;
+using Supabase;
+using System.Text.Json;
 
 namespace ONGManager.Services;
 
@@ -18,49 +20,53 @@ public class ImagemService
         _context = context;
     }
 
-    public async Task<ImagemDTO> UploadImagem(int animalId, IFormFile arquivo)
+    public async Task<string> UploadImagem(int animalId, IFormFile arquivo)
     {
-        // Validação básica
-        if (arquivo == null || arquivo.Length == 0)
-            throw new ArgumentException("Arquivo inválido");
-
-        if (arquivo.Length > 5 * 1024 * 1024) // 5MB
-            throw new ArgumentException("Tamanho máximo excedido (5MB)");
-
-        // Gera nome único para o arquivo
-        var extensao = Path.GetExtension(arquivo.FileName).ToLower();
-        var fileName = $"animal_{animalId}_{Guid.NewGuid()}{extensao}";
-
-        // Upload para o Supabase Storage
-        using var stream = arquivo.OpenReadStream();
-        var storageResult = await _supabase.Storage
-            .From(BucketName)
-            .Upload(stream, fileName, new FileOptions
+        try
+        {
+            var animalExiste = await _context.cadastro_animal.AnyAsync(a => a.id == animalId);
+            if (!animalExiste)
             {
-                CacheControl = "public, max-age=31536000",
-                Upsert = false
-            });
+                throw new ArgumentException($"Animal com ID {animalId} não encontrado");
+            }
 
-        // Obtém URL pública
-        var publicUrl = _supabase.Storage
-            .From(BucketName)
-            .GetPublicUrl(fileName);
+            var fileName = $"animal_{animalId}_{Guid.NewGuid()}{Path.GetExtension(arquivo.FileName)}";
 
-        // Salva no banco
-        var imagem = new Imagem
+            using var memoryStream = new MemoryStream();
+            await arquivo.CopyToAsync(memoryStream);
+            byte[] fileBytes = memoryStream.ToArray();
+
+            // Debug: verifique o conteúdo do arquivo
+            Console.WriteLine($"Tentando upload de {fileName} ({fileBytes.Length} bytes)");
+
+            var response = await _supabase.Storage
+                .From(BucketName)
+                .Upload(fileBytes, fileName);
+
+            Console.WriteLine($"Resposta do Supabase: {JsonSerializer.Serialize(response)}");
+
+            var publicUrl = _supabase.Storage
+                .From(BucketName)
+                .GetPublicUrl(fileName);
+
+            Console.WriteLine($"URL pública gerada: {publicUrl}");
+
+            var imagem = new Imagem
+            {
+                AnimalId = animalId,
+                imagem = publicUrl,
+                Animal = await _context.cadastro_animal.FindAsync(animalId) 
+            };
+
+            await _context.imagem.AddAsync(imagem);
+            await _context.SaveChangesAsync();
+
+            return publicUrl;
+        }
+        catch (Exception ex)
         {
-            AnimalId = animalId,
-            CaminhoImagem = publicUrl
-        };
-
-        await _context.Imagem.AddAsync(imagem);
-        await _context.SaveChangesAsync();
-
-        return new ImagemDTO
-        {
-            Id = imagem.Id,
-            AnimalId = imagem.AnimalId,
-            CaminhoImagem = imagem.CaminhoImagem
-        };
+            Console.WriteLine($"ERRO NO UPLOAD: {ex.ToString()}");
+            throw;
+        }
     }
 }

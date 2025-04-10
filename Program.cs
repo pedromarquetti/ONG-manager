@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using ONGManager.Controllers;
 using ONGManager.Data;
+using ONGManager.Services;
 using Supabase;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +22,10 @@ builder.Services.AddScoped(provider =>
         new SupabaseOptions
         {
             AutoConnectRealtime = true,
-            Storage = new Supabase.Storage.ClientOptions
-            {
-                RetryInterval = TimeSpan.FromSeconds(2)
-            }
         }
     ));
-
+builder.Services.AddScoped<ImagemService>();
+builder.Services.AddScoped<CadastroAnimaisController>();
 
 
 var app = builder.Build();
