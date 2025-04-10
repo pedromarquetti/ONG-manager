@@ -120,7 +120,7 @@ namespace ONGManager.Controllers
         {
             var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
 
-            if(animal != null)
+            if (animal != null)
             {
                 try
                 {
@@ -128,13 +128,14 @@ namespace ONGManager.Controllers
                     await _ongDbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o cadastro do animal: " + ex.Message.ToString());
                 }
-            }   
+            }
 
             return NotFound();
         }
+
     }
 }

@@ -31,5 +31,6 @@ public class CadastroAnimal
     public int porte_animal { get; set; }
     [ForeignKey("porte_animal")]
     public Porte? Porte { get; set; }
-    public ICollection<Imagem> Imagens { get; set; } = [];
+    public virtual ICollection<Imagem>? Imagens { get; set; } = new List<Imagem>();
+
 }

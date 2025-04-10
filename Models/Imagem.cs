@@ -1,17 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ONGManager.Models;
 
 public class Imagem
 {
     [Key]
-    [Required]
-    public int Id { get; set; }
-    [Required]
-    public int AnimalId { get; set; }
-    [Required]
-    public string CaminhoImagem { get; set; } = string.Empty;
+    public int id { get; set; }
 
-    [Required]
-    public CadastroAnimal? Animal { get; set; }
+    [Column("animal_id")] 
+    public int AnimalId { get; set; } 
+
+    [ForeignKey("AnimalId")]
+    public CadastroAnimal? Animal { get; set; } 
+
+    public string imagem { get; set; } = string.Empty;
 }
