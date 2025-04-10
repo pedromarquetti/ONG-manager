@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ONGManager</title>
+    <title>@ViewData["Title"]</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -19,8 +19,8 @@
         <nav class="bg-secondary-color navbar navbar-expand-sm">
             <div class="container-fluid">
                 <div class="navbar-logo d-flex justify-content-center align-items-center">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img class="" src="~/assets/logo ONG.png" alt="logo"></a>
-                    <a class="logo-text fw-bold navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Adote</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="CadastroAnimais" asp-action="Index"><img class="" src="~/assets/logoONG.png" alt="logo" style="width: 50px; height: 50px;"></a>
+                    <a class="logo-text fw-bold navbar-brand" asp-area="" asp-controller="CadastroAnimais" asp-action="Index">Adote</a>
                 </div>
                 <div class="dropdown">
                     <a href="#" class="btn dropdown-toggle text-dark" role="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -34,13 +34,13 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container content">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="bg-secondary-color footer">
+     <footer class="bg-secondary-color footer">
         <div class="d-flex justify-content-center align-items-center">
             <div class="d-flex flex-column">
             <p>Fale Conosco:</p>
@@ -58,7 +58,7 @@
             </div>
         </div>
         </div>
-    </footer>
+    </footer> 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

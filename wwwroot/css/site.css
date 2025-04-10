@@ -18,13 +18,17 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+  height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -60,8 +64,9 @@ body {
 /*FOOTER */
 
 footer{
+  flex-shrink: 0;
   font-size: 24px;
-  padding: 44px 0;
+  padding: 34px 0;
 }
 
 footer p {
@@ -75,4 +80,57 @@ footer .footer-contact {
 footer .footer-contact a {
   text-decoration: none;
   color: #000;
+}
+
+/*TELA PORTFOLIO ANIMAIS*/
+
+.title-area {
+  margin-top: 70px;
+}
+
+.container .row {
+  margin-bottom: 59px;
+}
+
+.container .image-area {
+  width: 250px;
+  height: 250px;
+  background-color: #d9d9d9;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.container .info-area .animal-info .animal-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .info-area .animal-info .animal-icon img{
+  width: 30px;
+  height: 30px;
+}
+
+
+.container .info-area .animal-info, 
+.animal-location {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pagination * {
+  border: none !important;
+}
+
+.pagination .page-link {
+  color: #000;
+  font-size: 30px;
+}
+
+.selected {
+  font-weight: bolder;
 }
