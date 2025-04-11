@@ -6,13 +6,26 @@ public class Usuarios
 {
     [Key]
     [Required]
-    public int Id { get; set; }
+    public int id { get; set; }
+
+    [Required]
+    public int nivel { get; set; }
+
     [Required]
     [StringLength(200)]
-    public string Usuario { get; set; } = "nome padrão";
+    public string senha { get; set; } = "senha padrão";
+
+
     [Required]
     [StringLength(200)]
-    public string Senha { get; set; } = "senha padrão";
+    public string usuario { get; set; } = "nome padrão";
+
     [Required]
-    public int Nivel { get; set; }
+    [StringLength(200)]
+    public string email { get; set; } = "email padrão";
+
+
+
+
+
 }
