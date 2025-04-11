@@ -3,7 +3,14 @@ using System.ComponentModel.DataAnnotations;
 namespace ONGManager.Data.DTOs;
 public class UsuarioDTO
 {
-    public int Id { get; set; }
-    public int Nivel { get; set; }
-    public string Usuario { get; set; } = string.Empty;
+    public int id { get; set; }
+    public int nivel { get; set; }
+    [Required]
+    public required string senha { get; set; }
+    [Required]
+    public required string usuario { get; set; }
+    [Required]
+    public required string email { get; set; }
+
+
 }

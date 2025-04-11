@@ -52,6 +52,11 @@ app.MapControllerRoute(
     pattern: "{controller=CadastroAnimais}/{action=Index}")
     .WithStaticAssets();
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=CadastroUsuarios}/{action=Index}")
+    .WithStaticAssets();
+
 
 
 app.Run();
