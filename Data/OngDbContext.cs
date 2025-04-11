@@ -12,5 +12,20 @@ namespace ONGManager.Data
         public DbSet<Imagem> imagem { get; set; }
         public DbSet<NiveisAcesso> niveis_acesso { get; set; }
         public DbSet<Rotina> rotina { get; set; }
+        public DbSet<ONG> ong { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Imagem>(entity =>
+            {
+                entity.ToTable("imagem");
+
+               
+                entity.HasOne(i => i.Animal)
+                      .WithMany(a => a.Imagens)
+                      .HasForeignKey(i => i.AnimalId)
+                      .HasConstraintName("FK_imagem_cadastro_animal");
+            });
+        }
     }
 }
