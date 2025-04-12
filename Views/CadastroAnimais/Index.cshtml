@@ -1,363 +1,116 @@
-@model IEnumerable<ONGManager.Models.CadastroAnimal>
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<ONGManager.Models.CadastroAnimal>
 
-<h2 class="title-area">Conheça seu novo amigo:</h2>
+@{
+    ViewData["Title"] = "Conheça seu novo amigo!";
+}
 
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        list-style: none;
+    }
 
+    .pagination li {
+        margin: 0 3px;
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Raca</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    .pagination .page-link {
+        font-size: 0.99rem;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+
+    .pagination .active .page-link {
+        background-color: transparent;
+        font-weight: bold;
+    }
+
+    .pagination .disabled .page-link {
+        background-color: transparent;
+        pointer-events: none;
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        z-index: 1;
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Conheça seu novo amigo:</h2>
+
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
+            <img src="/assets/icone cachorro.png" alt="Cachorros" style="width: 24px; height: 24px;">
+            Cachorros
+        </button>
+
+        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
+            <img src="/assets/icone gato.png" alt="Gatos" style="width: 24px; height: 24px;">
+            Gatos
+        </button>
+
+        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
+            <img src="/assets/icone animais.png" alt="Outros" style="width: 24px; height: 24px;">
+            Outros
+        </button>
+
+        <select class="form-select w-auto">
+            <option>Raça</option>
+        </select>
+        <select class="form-select w-auto">
+            <option>Estado</option>
+        </select>
+        <select class="form-select w-auto">
+            <option>Cidade</option>
+        </select>
+        <select class="form-select w-auto">
+            <option>Idade</option>
+        </select>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var animal in Model)
         {
-            <tr>
-                <td>@item.nome</td>
-                <td>@item.idade</td>
-                <td>@item.raca</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.id">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id">Excluir</a>
-                </td>
-            </tr>
+            <div class="col">
+                <a href="@Url.Action("Details", "CadastroAnimais", new { id = animal.id })" class="text-decoration-none text-dark">
+                    <div class="card h-100 text-center shadow-sm">
+                        <img src="@(animal.Imagens?.FirstOrDefault()?.imagem ?? "/assets/fotoPet.png")"
+                             class="card-img-top" style="height: 200px; object-fit: cover;" alt="Foto do animal">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @(animal.nome), @(animal.raca), @(animal.idade) anos
+                            </h5>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-geo-alt"></i> @(animal.cidade), @(animal.estado)
+                            </p>
+                        </div>
+                    </div>
+                </a>    
+            </div>
         }
-    </tbody>
-</table>
-
-<div class="container">
-    <div class="row row-cols-4">
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row row-cols-4">
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row row-cols-4">
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/fotoPet.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone cachorro.png" alt="">
-                    </div>
-                    <div class="animal-text">Princesa Leia, SRD, 3 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Limeira, SP</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <div class="row row-cols-4">
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="image-area">
-                <img src="~/assets/bela 1.png" alt="">
-            </div>
-            <div class="info-area">
-                <div class="animal-info">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone gato.png" alt="">
-                    </div>
-                    <div class="animal-text">Bela, SRD, 5 anos</div>
-                </div>
-                <div class="animal-location">
-                    <div class="animal-icon">
-                        <img src="~/assets/icone localização.png" alt="">
-                    </div>
-                    <div class="animal-text">Iracemápolis, SP</div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
-<div class="d-flex justify-content-center align-items-center ">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item"><a href="#" class="page-link"><</a></li>
-            <li class="page-item"><a href="#" class="page-link">1</a></li>
-            <li class="page-item selected"><a href="#" class="page-link">2</a></li>
-            <li class="page-item"><a href="#" class="page-link">3</a></li>
-            <li class="page-item"><a href="#" class="page-link">...</a></li>
-            <li class="page-item"><a href="#" class="page-link">9</a></li>
-            <li class="page-item"><a href="#" class="page-link">10</a></li>
-            <li class="page-item"><a href="#" class="page-link">></a></li>
-        </ul>
-    </nav>
-</div>
+@Html.PagedListPager(
+    Model,
+    pagina => Url.Action("Index", new { pagina }),
+    new PagedListRenderOptions
+    {
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        DisplayLinkToIndividualPages = true,
+        MaximumPageNumbersToDisplay = 5,
+        ContainerDivClasses = new[] { "d-flex", "justify-content-center" },
+        UlElementClasses = new[] { "pagination" }, 
+        LiElementClasses = new[] { "page-item" },  
+        PageClasses = new[] { "page-link" }       
+    }
+)
