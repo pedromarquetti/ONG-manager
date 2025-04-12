@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
 using ONGManager.Data.DTOs;
 using ONGManager.Models;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace ONGManager.Controllers
 {
@@ -12,11 +15,18 @@ namespace ONGManager.Controllers
         private readonly OngDbContext _ongDbContext = ongDbContext;
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string tipoAnimal, int? pagina)
         {
-            var animais = await _ongDbContext.cadastro_animal
+            int pageSize = 12;
+            int pageNumber = pagina ?? 1;
+
+            var query = _ongDbContext.cadastro_animal.AsQueryable();
+
+            var animais = _ongDbContext.cadastro_animal
                 .Include(a => a.Imagens)
-                .ToListAsync();
+                .OrderBy(a => a.id)
+                .ToPagedList(pageNumber, pageSize);
+
             return View(animais);
         }
 
