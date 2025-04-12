@@ -241,10 +241,11 @@
         <h1>Conheça @Model.nome:</h1>
 
         <div class="pet-profile">
-            <img src="@(Model.Imagens?.FirstOrDefault()?.imagem ?? "/assets/fotoPet.png")" />
+            <img src="@(Model.Imagens?.FirstOrDefault()?.imagem ?? "/assets/fotoPet.png")" style="width: 300px"/>
 
             <div class="pet-info">
                 <h2>Biografia</h2>
+                <p>@Model.biografia</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet ac mauris eget malesuada. Donec nec congue libero. In hac habitasse platea dictumst. Nulla ac diam eget leo egestas imperdiet sed quis tortor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
 
                 <div class="action-buttons">
