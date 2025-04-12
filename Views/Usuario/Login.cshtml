@@ -1,4 +1,4 @@
-﻿@model ONGManager.Models.Usuarios
+@model ONGManager.Models.Usuarios
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -146,8 +146,8 @@
     
 
     <div class="content">
-        <form asp-action="Create" method="post">
-            <h1>Cadastro de usuário</h1>
+        <form asp-action="Login" method="post">
+            <h1>Login</h1>
 
             <div class="form-group">
                 <div class="form-label-container">
@@ -156,25 +156,17 @@
                 <input asp-for="usuario" class="form-control" placeholder="Nome" />
             </div>
 
-            <div class="form-group">
-                <div class="form-label-container">
-                    <label class="form-label">E-mail:</label>
-                </div>
-                <input asp-for="email" type="email" class="form-control" placeholder="E-mail" />
-            </div>
 
             <div class="form-group">
                 <div class="form-label-container">
-                    <label class="form-label">Nível de acesso:</label>
+                    <label class="form-label">Senha:</label>
                 </div>
-                <select asp-for="nivel" class="form-select">
-                    <option value="" selected disabled>Nível de acesso</option>
-                    
-                </select>
+                <input asp-for="usuario" class="form-control" placeholder="Senha" />
             </div>
+
 
             <div class="save-btn-container">
-                <button type="submit" class="save-btn">Salvar</button>
+                <button type="submit" class="save-btn">Logar</button>
             </div>
         </form>
     </div>

@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ONGManager.Data;
-using ONGManager.Data.DTOs;
 using ONGManager.Models;
 
 namespace ONGManager.Controllers
@@ -11,6 +8,7 @@ namespace ONGManager.Controllers
     public class UsuarioController(OngDbContext ongDbContext) : Controller
     {
         private readonly OngDbContext _ctx = ongDbContext;
+
 
         // POST method for handling user creation
         [HttpPost]
@@ -34,6 +32,26 @@ namespace ONGManager.Controllers
                 }
 
             }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var usuario = await _ctx.usuario.ToListAsync();
+            return View(usuario);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
+        {
             return View();
         }
 
