@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
+using ONGManager.Models;
 
 namespace ONGManager.Controllers
 {
@@ -14,8 +15,30 @@ namespace ONGManager.Controllers
             var usuario = await _ongDbContext.usuario.ToListAsync();
             return View(usuario);
         }
-    
-    public IActionResult Create()
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Usuarios usr)
+        {
+            if (ModelState.IsValid) // check if input form is valid
+            {
+                try
+                {
+                    // try adding data to db
+                    await _ongDbContext.AddAsync(usr);
+                    await _ongDbContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Ocorreu um erro ao tentar cadastrar o animal: " + ex.Message);
+                }
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
