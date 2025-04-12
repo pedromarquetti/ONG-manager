@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ONGManager.Data;
-using ONGManager.Data.DTOs;
 using ONGManager.Models;
-using X.PagedList;
 using X.PagedList.Extensions;
 
 namespace ONGManager.Controllers
@@ -15,19 +13,65 @@ namespace ONGManager.Controllers
         private readonly OngDbContext _ongDbContext = ongDbContext;
 
         [HttpGet]
-        public IActionResult Index(string tipoAnimal, int? pagina)
+        public IActionResult Index(int tipoAnimal, int porteAnimal, string raca, string estado, string cidade, int idade, int? pagina)
         {
             int pageSize = 12;
             int pageNumber = pagina ?? 1;
 
             var query = _ongDbContext.cadastro_animal.AsQueryable();
+            query = query.Include(a => a.Imagens);
 
-            var animais = _ongDbContext.cadastro_animal
-                .Include(a => a.Imagens)
+            var porteAnimalMap = new Dictionary<int, string>
+            {
+                { 1, "Pequeno" },
+                { 2, "Médio" },
+                { 3, "Grande" }
+            };
+
+            ViewBag.PorteAnimalMap = porteAnimalMap;
+
+
+            if (tipoAnimal > 0)
+            {
+                query = query.Where(a => a.tipo_animal == tipoAnimal);
+            }
+
+            if(porteAnimal > 0)
+            {
+                query = query.Where(a => a.porte_animal == porteAnimal);
+            }
+
+            if (!raca.IsNullOrEmpty())
+            {
+                query = query.Where(a => a.raca == raca);
+            }
+
+            if (!estado.IsNullOrEmpty())
+            {
+                query = query.Where(a => a.estado == estado);
+            }
+
+            if (!cidade.IsNullOrEmpty())
+            {
+                query = query.Where(a => a.cidade == cidade);
+            }
+
+            if(idade > 0)
+            {
+                query = query.Where(a => a.idade == idade);
+            }
+
+            ViewBag.Racas = _ongDbContext.cadastro_animal.Select(a => a.raca).Distinct().ToList();
+            ViewBag.PorteAnimal = _ongDbContext.cadastro_animal.Select(a => a.porte_animal).Distinct().ToList();
+            ViewBag.Estados = _ongDbContext.cadastro_animal.Select(a => a.estado).Distinct().ToList();
+            ViewBag.Cidades = _ongDbContext.cadastro_animal.Select(a => a.cidade).Distinct().ToList();
+            ViewBag.Idades = _ongDbContext.cadastro_animal.Select(a => a.idade).Distinct().ToList();
+
+            var animais = query
                 .OrderBy(a => a.id)
                 .ToPagedList(pageNumber, pageSize);
 
-            return View(animais);
+           return View(animais);
         }
 
         [HttpGet]
