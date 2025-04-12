@@ -7,74 +7,106 @@
 
 <style>
     .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 0;
-        list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
     }
 
     .pagination li {
-        margin: 0 3px;
+    margin: 0 3px;
     }
 
     .pagination .page-link {
-        font-size: 0.99rem;
-        padding: 5px 10px;
-        border-radius: 8px;
+    font-size: 0.99rem;
+    padding: 5px 10px;
+    border-radius: 8px;
     }
 
     .pagination .active .page-link {
-        background-color: transparent;
-        font-weight: bold;
+    background-color: transparent;
+    font-weight: bold;
     }
 
     .pagination .disabled .page-link {
-        background-color: transparent;
-        pointer-events: none;
+    background-color: transparent;
+    pointer-events: none;
     }
 
     .card {
-        transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
     }
 
     .card:hover {
-        transform: scale(1.05);
-        z-index: 1;
+    transform: scale(1.05);
+    z-index: 1;
     }
 </style>
 
 <div class="container my-5">
     <h2 class="text-center mb-4">Conheça seu novo amigo:</h2>
 
-    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
-            <img src="/assets/icone cachorro.png" alt="Cachorros" style="width: 24px; height: 24px;">
-            Cachorros
-        </button>
+    @using (Html.BeginForm("Index", "CadastroAnimais", FormMethod.Get))
+    {
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            <button type="submit" class="btn btn-outline-dark d-flex align-items-center gap-2" name="tipoAnimal" value="1">
+                <img src="/assets/icone cachorro.png" alt="Cachorros" style="width: 24px; height: 24px;">
+                Cachorros
+            </button>
 
-        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
-            <img src="/assets/icone gato.png" alt="Gatos" style="width: 24px; height: 24px;">
-            Gatos
-        </button>
+            <button type="submit" class="btn btn-outline-dark d-flex align-items-center gap-2" name="tipoAnimal" value="2">
+                <img src="/assets/icone gato.png" alt="Gatos" style="width: 24px; height: 24px;">
+                Gatos
+            </button>
 
-        <button class="btn btn-outline-dark d-flex align-items-center gap-2">
-            <img src="/assets/icone animais.png" alt="Outros" style="width: 24px; height: 24px;">
-            Outros
-        </button>
+            <button type="submit" class="btn btn-outline-dark d-flex align-items-center gap-2" name="tipoAnimal" value="3">
+                <img src="/assets/icone animais.png" alt="Outros" style="width: 24px; height: 24px;">
+                Outros
+            </button>
 
-        <select class="form-select w-auto">
-            <option>Raça</option>
-        </select>
-        <select class="form-select w-auto">
-            <option>Estado</option>
-        </select>
-        <select class="form-select w-auto">
-            <option>Cidade</option>
-        </select>
-        <select class="form-select w-auto">
-            <option>Idade</option>
-        </select>
-    </div>
+            <select class="form-select w-auto" name="raca">
+                <option value="">Raça</option>
+                    @foreach (var raca in ViewBag.Racas)
+                    {
+                        <option value="@raca">@raca</option>
+                    }
+            </select>
+
+            <select class="form-select w-auto" name="porteAnimal">
+                <option value="">Porte Animal</option>
+                    @foreach (var porte in ViewBag.PorteAnimalMap as Dictionary<int, string>)
+                    {
+                        <option value="@porte.Key">@porte.Value</option> 
+                    }
+            </select>
+
+            <select class="form-select w-auto" name="estado">
+                <option value="">Estado</option>
+                    @foreach (var estado in ViewBag.Estados)
+                    {
+                        <option value="@estado">@estado</option>
+                    }
+            </select>
+
+            <select class="form-select w-auto" name="cidade">
+                <option value="">Cidade</option>
+                    @foreach (var cidade in ViewBag.Cidades)
+                    {
+                        <option value="@cidade">@cidade</option>
+                    }
+            </select>
+
+            <select class="form-select w-auto" name="idade">
+                <option value="">Idade</option>
+                    @foreach (var idade in ViewBag.Idades)
+                    {
+                        <option value="@idade">@idade</option>
+                    }
+            </select>
+
+                <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    }
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach (var animal in Model)
@@ -97,7 +129,6 @@
             </div>
         }
     </div>
-</div>
 
 @Html.PagedListPager(
     Model,
