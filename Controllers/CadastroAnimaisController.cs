@@ -14,18 +14,22 @@ namespace ONGManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var animais = await _ongDbContext.cadastro_animal.ToListAsync();
+            var animais = await _ongDbContext.cadastro_animal
+                .Include(a => a.Imagens)
+                .ToListAsync();
             return View(animais);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
-            
-            if(animal != null)
+            var animal = await _ongDbContext.cadastro_animal
+                .Include(a => a.Imagens)
+                .FirstOrDefaultAsync(a => a.id == id);
+
+            if (animal != null)
                 return View(animal);
-            
+
             return NotFound();
         }
 
@@ -64,11 +68,12 @@ namespace ONGManager.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var animal = await _ongDbContext.cadastro_animal
-                        .Include(c => c.TipoAnimal)
-                        .Include(c => c.Porte)
-                        .FirstOrDefaultAsync(a => a.id == id);
-            
-            if(animal != null)
+                .Include(c => c.TipoAnimal)
+                .Include(c => c.Porte)
+                .Include(a => a.Imagens) // Adicionado
+                .FirstOrDefaultAsync(a => a.id == id);
+
+            if (animal != null)
             {
                 ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
                 ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte");
@@ -82,7 +87,7 @@ namespace ONGManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CadastroAnimal cadastroAnimal)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -90,7 +95,7 @@ namespace ONGManager.Controllers
                     await _ongDbContext.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     System.Console.WriteLine("Ocorreu o seguinte erro ao tentar atualizar as informções: " + ex.Message.ToString());
                 }
@@ -107,10 +112,10 @@ namespace ONGManager.Controllers
         {
             var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
 
-            if(animal != null)
+            if (animal != null)
             {
                 return View(animal);
-            }   
+            }
 
             return NotFound();
         }

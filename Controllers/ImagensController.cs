@@ -14,7 +14,7 @@ public class ImagensController : Controller
     private readonly ImagemService _imagemService;
     private readonly OngDbContext _context;
 
-    
+
     public ImagensController(ImagemService imagemService, OngDbContext context)
     {
         _imagemService = imagemService;
@@ -27,11 +27,20 @@ public class ImagensController : Controller
         try
         {
             var resultado = await _imagemService.UploadImagem(animalId, arquivo);
-            return Ok(resultado);
+            return Ok(new
+            {
+                success = true,
+                url = resultado,
+                message = "Upload realizado com sucesso"
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new
+            {
+                success = false,
+                message = ex.Message
+            });
         }
     }
 
@@ -82,4 +91,41 @@ public class ImagensController : Controller
     {
         return _context.cadastro_animal.Any(e => e.id == id);
     }
+
+    [HttpGet("animal/{animalId}")]
+    public async Task<IActionResult> GetImagemPorAnimal(int animalId)
+    {
+        try
+        {
+            var imagem = await _context.imagem
+                .Where(i => i.AnimalId == animalId)
+                .OrderByDescending(i => i.id) 
+                .FirstOrDefaultAsync();
+
+            if (imagem == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Nenhuma imagem encontrada para este animal"
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                url = imagem.imagem,
+                animalId = imagem.AnimalId
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                success = false,
+                message = $"Erro ao buscar imagem: {ex.Message}"
+            });
+        }
+    }
 }
+
