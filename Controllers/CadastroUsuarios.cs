@@ -14,8 +14,14 @@ namespace ONGManager.Controllers
             var usuario = await _ongDbContext.usuario.ToListAsync();
             return View(usuario);
         }
-    
-    public IActionResult Create()
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+        public IActionResult Login()
         {
             return View();
         }
