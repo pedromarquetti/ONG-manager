@@ -26,6 +26,7 @@ builder.Services.AddScoped(provider =>
     ));
 builder.Services.AddScoped<ImagemService>();
 builder.Services.AddScoped<CadastroAnimaisController>();
+builder.WebHost.UseStaticWebAssets();
 
 
 var app = builder.Build();
