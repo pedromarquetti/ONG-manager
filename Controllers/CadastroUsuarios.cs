@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
 using ONGManager.Models;
@@ -17,20 +22,72 @@ namespace ONGManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Usuarios usr)
+        public async Task<IActionResult> Create(Usuarios usuarios)
         {
-            if (ModelState.IsValid) // check if input form is valid
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    // try adding data to db
-                    await _ongDbContext.AddAsync(usr);
+                    var passwordHasher = new PasswordHasher<object>();
+                    string senhaCriptografada = passwordHasher.HashPassword(usuarios.usuario, usuarios.senha);
+
+                    usuarios.senha = senhaCriptografada;
+
+                    await _ongDbContext.usuario.AddAsync(usuarios);
                     await _ongDbContext.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine("Ocorreu um erro ao tentar cadastrar o animal: " + ex.Message);
+                    System.Console.WriteLine("Ocorreu um erro ao tentar cadastrar o usuário: " + ex.Message);
+                }
+            }
+
+            ViewBag.NivelDeAcesso = new SelectList(_ongDbContext.niveis_acesso, "id", "nivel");
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(Usuarios usuariosModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var usuario = _ongDbContext.usuario
+                        .FirstOrDefault(u => u.usuario == usuariosModel.usuario);
+
+                    if (usuario == null)
+                        return Unauthorized();
+
+                    var passwordHasher = new PasswordHasher<object>();
+                    var result = passwordHasher.VerifyHashedPassword(usuario, usuario.senha, usuariosModel.senha);
+
+                    if (result == PasswordVerificationResult.Failed)
+                        return Unauthorized();    
+
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.Name, usuario.usuario),
+                        new("Nivel", usuario.nivel.ToString()),
+                        new("UserId", usuario.id.ToString())
+                    };
+
+                    var identity = new ClaimsIdentity(claims, "LoginCookie");
+                    var principal = new ClaimsPrincipal(identity);
+
+                    await HttpContext.SignInAsync("LoginCookie", principal);
+
+                    return RedirectToAction("Index", "CadastroAnimais");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Ocorreu o seguinte erro ao tentar atualizar as informções: " + ex.Message.ToString());
                 }
             }
 
@@ -40,13 +97,16 @@ namespace ONGManager.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.NivelDeAcesso = new SelectList(_ongDbContext.niveis_acesso, "id", "nivel");
             return View();
         }
 
-
-        public IActionResult Login()
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync("LoginCookie");
+            return RedirectToAction("Login", "CadastroUsuarios");
         }
+
     }
 }
