@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,10 +27,21 @@
                         <img src="~/assets/perfil 1.png" alt="">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown">
-                        <li><a asp-controller="CadastroUsuarios" asp-action="Login" class="dropdown-item">Entrar</a></li>
-                        <li><a asp-action="Create" class="dropdown-item">Cadastrar Animal</a></li>
-                        <li><a asp-controller="CadastroUsuarios" asp-action="Index" class="dropdown-item">Gerenciar Usuários</a></li>
-                        <li><a asp-controller="Ong" asp-action="Edit" class="dropdown-item">Gerenciar ONG</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-action="Create" class="dropdown-item">Cadastrar Animal</a></li>
+                            <li><a asp-controller="CadastroUsuarios" asp-action="Index" class="dropdown-item">Gerenciar Usuários</a></li>
+                            <li><a asp-controller="Ong" asp-action="Edit" class="dropdown-item">Gerenciar ONG</a></li>
+                            <li>
+                                <form method="post" asp-controller="CadastroUsuarios" asp-action="Logout">
+                                    <button type="submit" class="dropdown-item">Sair</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a asp-controller="CadastroUsuarios" asp-action="Login" class="dropdown-item">Entrar</a></li>
+                        }
                     </ul>
                 </div>
             </div>

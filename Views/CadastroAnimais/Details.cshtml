@@ -241,7 +241,7 @@
         <h1>Conheça @Model.nome:</h1>
 
         <div class="pet-profile">
-            <img src="@(Model.Imagens?.FirstOrDefault()?.imagem ?? "/assets/fotoPet.png")" style="width: 300px"/>
+            <img src="@(Model.Imagens?.FirstOrDefault()?.imagem ?? "/assets/fotoPet.png")" style="width: 300px; heigth: 300px; object-fit: cover;"/>
 
             <div class="pet-info">
                 <h2>Biografia</h2>
@@ -250,7 +250,10 @@
 
                 <div class="action-buttons">
                     <a href="#" class="btn-adopt">Quero adotar</a>
-                    <a asp-action="Edit" asp-route-id="@Model.id" class="btn-edit">Editar</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.id" class="btn-edit">Editar</a>
+                    }
                 </div>
             </div>
         </div>

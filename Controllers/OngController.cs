@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
@@ -10,6 +11,7 @@ namespace ONGManager.Controllers
         private readonly OngDbContext _ongDbContext = ongDbContext;
 
         [HttpGet]
+        [Authorize(Policy = "Administrador")]
         public async Task<IActionResult> Edit()
         {
             var ong = await _ongDbContext.ong.FirstOrDefaultAsync();
@@ -23,6 +25,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         public async Task<IActionResult> Edit(ONG ong)
         {
             if(ModelState.IsValid)
