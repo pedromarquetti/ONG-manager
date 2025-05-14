@@ -6,8 +6,8 @@ public class NiveisAcesso
 {
     [Key]
     [Required]
-    public int Id { get; set; }
+    public int id { get; set; }
     [Required]
-    public string Nivel { get; set; } = string.Empty;
+    public string nivel { get; set; } = string.Empty;
     public ICollection<Rotina> Rotinas { get; set; } = [];
 }

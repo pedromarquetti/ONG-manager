@@ -165,11 +165,17 @@
 
             <div class="form-group">
                 <div class="form-label-container">
+                    <label class="form-label">Senha:</label>
+                </div>
+                <input asp-for="senha" type="password" class="form-control" placeholder="Senha" />
+            </div>
+
+            <div class="form-group">
+                <div class="form-label-container">
                     <label class="form-label">Nível de acesso:</label>
                 </div>
-                <select asp-for="nivel" class="form-select">
-                    <option value="" selected disabled>Nível de acesso</option>
-                    
+                <select asp-for="nivel" class="form-select" asp-items="ViewBag.NivelDeAcesso">
+                    <option value="" disabled selected>Selecione um nível de acesso</option>
                 </select>
             </div>
 

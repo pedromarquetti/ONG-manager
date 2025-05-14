@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +89,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
@@ -96,6 +98,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CadastroAnimal cadastroAnimal)
         {
             if (ModelState.IsValid)
@@ -119,6 +122,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var animal = await _ongDbContext.cadastro_animal
@@ -139,6 +143,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(CadastroAnimal cadastroAnimal)
         {
             if (ModelState.IsValid)
@@ -162,6 +167,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
@@ -175,6 +181,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
