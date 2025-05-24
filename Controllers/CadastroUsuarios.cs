@@ -69,7 +69,7 @@ namespace ONGManager.Controllers
                     var result = passwordHasher.VerifyHashedPassword(usuario, usuario.senha, usuariosModel.senha);
 
                     if (result == PasswordVerificationResult.Failed)
-                        return Unauthorized();    
+                        return Unauthorized();
 
                     var claims = new List<Claim>
                     {
@@ -108,5 +108,71 @@ namespace ONGManager.Controllers
             return RedirectToAction("Login", "CadastroUsuarios");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id , int nivel)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usuario = await _ongDbContext.usuario.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            var niveis = await _ongDbContext.niveis_acesso.ToListAsync();
+
+           
+            ViewBag.NiveisAcesso = niveis.Select(n => new SelectListItem
+            {
+                Value = n.id.ToString(),
+                Text = n.nivel,
+                Selected = n.id == usuario.nivel 
+            }).ToList();
+
+            return View(usuario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Usuarios usuarioModel)
+        {
+            if (id != usuarioModel.id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Atualiza diretamente o modelo recebido do front-end
+                    _ongDbContext.Update(usuarioModel);
+                    await _ongDbContext.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    
+                    if (!UsuarioExists(usuarioModel.id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("", "O registro foi modificado por outro usuário. Por favor, recarregue e tente novamente." + ex.Message.ToString());
+                        return View(usuarioModel);
+                    }
+                }
+            }
+
+            return View(usuarioModel);
+        }
+        private bool UsuarioExists(int id)
+        {
+            return _ongDbContext.usuario.Any(e => e.id == id);
+        }
     }
 }

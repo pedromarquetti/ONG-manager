@@ -2,11 +2,13 @@
 
 @{
     ViewData["Title"] = "Gerenciamento " + @Model.nome_ong;
+    ViewData["HideFooter"] = true;
+    Layout = "_Layout";
 }
 
+
 <div class="container my-5">
-    <h1 class="mb-4">Gerenciamento @Model.nome_ong</h1>
-    <form asp-action="Edit" method="post">
+       <form asp-action="Edit" method="post">
 
         <input type="hidden" asp-for="id" />
 

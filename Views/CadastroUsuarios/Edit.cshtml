@@ -1,12 +1,11 @@
 ﻿@model ONGManager.Models.Usuarios
-
 @{
-    ViewData["Title"] = "Cadastro de usuário";
+    ViewData["Title"] = "Edição de usuário";
     ViewData["HideFooter"] = true;
     Layout = "_Layout";
 }
 
-    @section Styles {
+@section Styles {
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -129,64 +128,55 @@
             }
 
         @@media (max-width: 576px) {
-            .content
+            .content {
+                padding: 20px;
+            }
 
-        {
-            padding: 20px;
-        }
-
-        .form-control, .form-select {
-            max-width: 100%;
-        }
-
+            .form-control, .form-select {
+                max-width: 100%;
+            }
         }
     </style>
-    }
+}
 
-    
+<div class="content">
+    <h1>Edição de usuário</h1>
 
-    <div class="content">
-        <form asp-action="Create" method="post">
-        <h1>Cadastro de usuário</h1>
-            
-            <div class="form-group">
-                <div class="form-label-container">
-                    <label class="form-label">Nome:</label>
-                </div>
-                <input asp-for="usuario" class="form-control" placeholder="Nome" />
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="id" />
+
+        <div class="form-group">
+            <div class="form-label-container">
+                <label class="form-label">Nome:</label>
             </div>
+            <input asp-for="usuario" class="form-control" placeholder="Nome" />
+        </div>
 
-            <div class="form-group">
-                <div class="form-label-container">
-                    <label class="form-label">E-mail:</label>
-                </div>
-                <input asp-for="email" type="email" class="form-control" placeholder="E-mail" />
+        <div class="form-group">
+            <div class="form-label-container">
+                <label class="form-label">E-mail:</label>
             </div>
+            <input asp-for="email" type="email" class="form-control" placeholder="E-mail" />
+        </div>
 
-            <div class="form-group">
-                <div class="form-label-container">
-                    <label class="form-label">Senha:</label>
-                </div>
-                <input asp-for="senha" type="password" class="form-control" placeholder="Senha" />
+        <div class="form-group">
+            <div class="form-label-container">
+                <label class="form-label">Nível de acesso:</label>
             </div>
+            <select asp-for="nivel" class="form-select" asp-items="ViewBag.NiveisAcesso">
+              </select>
+        </div>
+                
+        <div class="save-btn-container">
+            <button type="submit" class="save-btn">Salvar</button>
+        </div>
+        
+    </form>
+</div>
 
-            <div class="form-group">
-                <div class="form-label-container">
-                    <label class="form-label">Nível de acesso:</label>
-                </div>
-                <select asp-for="nivel" class="form-select" asp-items="ViewBag.NivelDeAcesso">
-                    <option value="" disabled selected>Selecione um nível de acesso</option>
-                </select>
-            </div>
-
-            <div class="save-btn-container">
-                <button type="submit" class="save-btn">Salvar</button>
-            </div>
-        </form>
-    </div>
-    @section Scripts{
+@section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
-    }
-
+}
