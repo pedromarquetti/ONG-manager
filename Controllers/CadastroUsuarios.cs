@@ -109,7 +109,7 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id , int nivel)
+        public async Task<IActionResult> Edit(int? id, int nivel)
         {
             if (id == null)
             {
@@ -123,12 +123,12 @@ namespace ONGManager.Controllers
             }
             var niveis = await _ongDbContext.niveis_acesso.ToListAsync();
 
-           
+
             ViewBag.NiveisAcesso = niveis.Select(n => new SelectListItem
             {
                 Value = n.id.ToString(),
                 Text = n.nivel,
-                Selected = n.id == usuario.nivel 
+                Selected = n.id == usuario.nivel
             }).ToList();
 
             return View(usuario);
@@ -155,7 +155,7 @@ namespace ONGManager.Controllers
                 }
                 catch (Exception ex)
                 {
-                    
+
                     if (!UsuarioExists(usuarioModel.id))
                     {
                         return NotFound();
@@ -170,6 +170,43 @@ namespace ONGManager.Controllers
 
             return View(usuarioModel);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var usuario = await _ongDbContext.usuario.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return View(usuario);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var usuario = await _ongDbContext.usuario.FindAsync(id);
+            if (usuario != null)
+            {
+                try
+                {
+                    _ongDbContext.usuario.Remove(usuario);
+                    await _ongDbContext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o usuário: " + ex.Message.ToString());
+                }
+            }
+
+            return View(usuario);
+        }
+
         private bool UsuarioExists(int id)
         {
             return _ongDbContext.usuario.Any(e => e.id == id);

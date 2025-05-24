@@ -1,0 +1,25 @@
+@model ONGManager.Models.Usuarios
+
+<h2>
+    Você tem certeza que quer apagar o cadastro de @Model.usuario?
+</h2>
+
+<p>
+    <strong>Nome:</strong> @Model.usuario
+</p>
+
+<p>
+    <strong>Email:</strong> @Model.email
+</p>
+
+<p>
+    <strong>Nível:</strong> @Model.nivel
+</p>
+
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="id" />
+    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+</form>
+
+<a asp-action="Index">Voltar</a>
