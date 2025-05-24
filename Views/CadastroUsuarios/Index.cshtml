@@ -41,10 +41,10 @@
             text-decoration: none;
         }
 
-            .btn-cadastrar:hover {
-                background-color: #1c54c0;
-                color: white;
-            }
+        .btn-cadastrar:hover {
+            background-color: #1c54c0;
+            color: white;
+        }
 
         .table-container {
             margin: 0 auto;
@@ -55,20 +55,20 @@
             border-collapse: collapse;
         }
 
-            .table th {
-                padding: 10px 16px;
-                border: 1px solid #d0d0d0;
-                font-weight: 600;
-                font-size: 16px;
-                text-align: left;
-                background-color: #f8f8f8;
-            }
+        .table th {
+            padding: 10px 16px;
+            border: 1px solid #d0d0d0;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: left;
+            background-color: #f8f8f8;
+        }
 
-            .table td {
-                padding: 10px 16px;
-                border: 1px solid #d0d0d0;
-                font-size: 16px;
-            }
+        .table td {
+            padding: 10px 16px;
+            border: 1px solid #d0d0d0;
+            font-size: 16px;
+        }
 
         .action-column {
             width: 100px;
@@ -84,7 +84,8 @@
         }
 
         /* Remover outline ao clicar */
-        a:focus, button:focus {
+        a:focus,
+        button:focus {
             outline: none !important;
             box-shadow: none !important;
         }
@@ -124,73 +125,165 @@
         .page-nav {
             font-size: 14px;
         }
+
+        /* Modal styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .user-info p {
+            margin: 8px 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn-voltar {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 24px;
+            padding: 8px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-voltar:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-excluir {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 8px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-excluir:hover {
+            background-color: #c82333;
+        }
     </style>
-    }
+}
 
-    <div class="content">
-        <div class="page-header">
-            <h1>Usuários</h1>
-            <a asp-action="Create" class="btn-cadastrar">Cadastrar</a>
-        </div>
+<div class="content">
+    <div class="page-header">
+        <h1>Usuários</h1>
+        <a asp-action="Create" class="btn-cadastrar">Cadastrar</a>
+    </div>
 
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nome usuário</th>
-                        <th>Nível de acesso</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome usuário</th>
+                    <th>Nível de acesso</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
                     {
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.usuario</td>
-                                <td>@item.nivel</td>
-                                <td class="action-column">
-                                    <a asp-action="Edit" asp-route-id="@item.id" class="action-btn">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                        </svg>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.id" class="action-btn">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <!-- Dados de exemplo para quando não houver dados -->
                         <tr>
-                            <td>Lídia</td>
-                            <td>administrador</td>
+                            <td>@item.usuario</td>
+                            <td>@item.nivel</td>
                             <td class="action-column">
-                                <a href="#" class="action-btn">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <a asp-action="Edit" asp-route-id="@item.id" class="action-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                     </svg>
                                 </a>
-                                <a href="#" class="action-btn">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <button type="button" class="action-btn delete-btn" data-id="@item.id"
+                                    data-usuario="@item.usuario">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
                                     </svg>
-                                </a>
+                                </button>
                             </td>
                         </tr>
-                        <!-- Outros dados de exemplo omitidos para brevidade -->
                     }
-                </tbody>
-            </table>
-        </div>
+                }
+                else
+                {
+                    <!-- Dados de exemplo para quando não houver dados -->
+                    <tr>
+                        <td>Lídia</td>
+                        <td>administrador</td>
+                        <td class="action-column">
+                            <a href="#" class="action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                            </a>
+                            <a href="#" class="action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>   
+                    <!-- Outros dados de exemplo omitidos para brevidade -->
+                }
+            </tbody>
+        </table>
+    </div>
 
         <nav aria-label="Paginação">
             <ul class="pagination">
@@ -214,8 +307,59 @@
         </nav>
     </div>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-backdrop">
+    <div class="modal-container">
+        <h1 class="modal-title">
+            Você tem certeza que quer apagar o usuário <span id="modalUserName"></span>?
+        </h1>
+        <p style="font-family: 'Poppins', sans-serif; font-size: 16px; color: #AAAAAA">
+            Essa ação não pode ser desfeita.
+        </p>
+
+        <div class="modal-actions">
+            <button type="button" id="btnCancelar" class="btn-voltar">Voltar</button>
+            <form id="deleteForm" asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" id="deleteUserId" name="id" />
+                <button type="submit" class="btn-excluir">Confirmar Exclusão</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Open the modal when delete button is clicked
+            $(".delete-btn").click(function () {
+                const id = $(this).data("id");
+                const usuario = $(this).data("usuario");
+
+
+                // Set modal content
+                $("#modalUserName").text(usuario);
+                $("#deleteUserId").val(id);
+
+                // Show modal
+                $("#deleteModal").fadeIn(200);
+            });
+
+            // Close the modal when cancel button is clicked
+            $("#btnCancelar").click(function () {
+                $("#deleteModal").fadeOut(200);
+            });
+
+            // Close the modal when clicking outside
+            $("#deleteModal").click(function (e) {
+                if ($(e.target).is("#deleteModal")) {
+                    $("#deleteModal").fadeOut(200);
+                }
+            });
+        });
+    </script>
 }
